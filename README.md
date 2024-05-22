@@ -1,4 +1,4 @@
-# API-Glucofy
+# <img src="https://github.com/Glucofy-Team/.github/blob/main/profile/img/logo.png" width="50"> API-Glucofy
 
 ## 1. Cloud Architecture
 The app architecture in the cloud will be like this :
