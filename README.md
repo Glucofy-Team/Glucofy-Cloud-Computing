@@ -9,6 +9,7 @@ We use Cloud Run, Cloud Storage, and Cloud Firestore services to support our app
 
 ## 2. Database
 <img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_NoSQL.drawio.png">
+Our application's database utilizes Firestore, which contains a primary user collection. Each document within this user collection represents an individual user and includes a tracker subcollection that stores related tracking information specific to that user.
 
 ## Deploy API to Cloud Run
 - First, make sure the Artifact Registry, Cloud Run, and Cloud Build APIs are active by running the following command (click Authorize if the popup appears):
