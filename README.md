@@ -9,3 +9,21 @@ We use Cloud Run, Cloud Storage, and Cloud Firestore services to support our app
 
 ## 2. Database
 <img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_NoSQL.drawio.png">
+
+## Deploy to Cloud Run
+- First, make sure the Artifact Registry, Cloud Run, and Cloud Build APIs are active by running the following command (click Authorize if the popup appears):
+```console
+gcloud services enable artifactregistry.googleapis.com cloudbuild.googleapis.com run.googleapis.com
+```
+- Create an Artifact Registry repository by running the following command:
+```console
+gcloud artifacts repositories create backend --repository-format=docker --location=asia-southeast2 --async
+```
+- Create a new container image by running the following command: 
+```console
+gcloud builds submit --tag asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/glucofy-api:1.0.0
+```
+- Deploy a new container image to Google Cloud Run:
+```console
+gcloud run deploy --image asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/glucofy-api:1.0.0
+```
