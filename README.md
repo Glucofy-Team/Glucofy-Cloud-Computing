@@ -16,10 +16,12 @@ Our application's database utilizes Firestore, which contains a primary user col
     ```console
     docker build -t gcr.io/glucofy/machine-learning:tag .
     ```
+    
 **Push the Docker Image to Container Registry**:
     ```console
     docker push gcr.io/glucofy/machine-learning:tag
     ```
+    
 **Deploy to Google Cloud Run**:
     ```console
     gcloud run deploy machine-learning \
@@ -29,6 +31,7 @@ Our application's database utilizes Firestore, which contains a primary user col
         --allow-unauthenticated \
         --memory 2Gi
     ```
+    
 ## Endpoints
 
 | Endpoint    | Method | Description              |
