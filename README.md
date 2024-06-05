@@ -11,20 +11,28 @@ We use Cloud Run, Cloud Storage, and Cloud Firestore services to support our app
 <img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_NoSQL.drawio.png">
 Our application's database utilizes Firestore, which contains a primary user collection. Each document within this user collection represents an individual user and includes a tracker subcollection that stores related tracking information specific to that user.
 
-## Deploy API to Cloud Run
-- First, make sure the Artifact Registry, Cloud Run, and Cloud Build APIs are active by running the following command (click Authorize if the popup appears):
-```console
-gcloud services enable artifactregistry.googleapis.com cloudbuild.googleapis.com run.googleapis.com
-```
-- Create an Artifact Registry repository by running the following command:
-```console
-gcloud artifacts repositories create backend --repository-format=docker --location=asia-southeast2 --async
-```
-- Create a new container image by running the following command: 
-```console
-gcloud builds submit --tag asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/glucofy-api:1.0.0
-```
-- Deploy a new container image to Google Cloud Run:
-```console
-gcloud run deploy --image asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/glucofy-api:1.0.0
-```
+## Deploy Models to Cloud Run
+ **Build the Docker Image**:
+    ```console
+    docker build -t gcr.io/glucofy/machine-learning:tag .
+    ```
+**Push the Docker Image to Container Registry**:
+    ```console
+    docker push gcr.io/glucofy/machine-learning:tag
+    ```
+**Deploy to Google Cloud Run**:
+    ```console
+    gcloud run deploy machine-learning \
+        --image gcr.io/glucofy/machine-learning:tag \
+        --platform managed \
+        --region asia-southeast2 \
+        --allow-unauthenticated \
+        --memory 2Gi
+    ```
+## Endpoints
+
+| Endpoint    | Method | Description              |
+|-------------|--------|--------------------------|
+| `/recommend`| GET    | Gives meal recommendation|
+| To be discussed                                 |
+
