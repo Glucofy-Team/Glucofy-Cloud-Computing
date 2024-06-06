@@ -20,5 +20,23 @@ def gl_classification_report():
     report = generate_gl_classification_report()
     return jsonify(report)
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.json  # place holder input data
+    category = data['category']
+    food_name = data['food_name']
+    calories = float(data['calories'])
+    proteins = float(data['proteins'])
+    carbs = float(data['carbs'])
+    fats = float(data['fats'])
+
+    # process input placeholder
+    # processed_data = placeholder(category, food_name, calories, proteins, carbs, fats)
+    # prediction = placeholder(processed_data)
+    
+    prediction = "This is a placeholder prediction"
+
+    return jsonify({'prediction': prediction})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
