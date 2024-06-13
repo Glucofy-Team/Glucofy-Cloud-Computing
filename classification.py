@@ -95,14 +95,14 @@ new_data = np.array([[80, 20]])  # input manual buat test klasifikasi
 # Normalisasi input baru
 new_data_scaled = scaler.transform(new_data)
 
-def generate_gi_classification_report():
+def generate_gi_gl_classification_report():
+    #Glycemic Index
     gi_new_prediction = model_gi.predict(new_data_scaled)
     gi_new_pred_class = np.argmax(gi_new_prediction, axis=1)
     gi_new_pred_label = label_encoder_gi.inverse_transform(gi_new_pred_class)
-    return gi_new_pred_label[0]
-
-def generate_gl_classification_report():
+    #Glycemic Load
     gl_new_prediction = model_gl.predict(new_data_scaled)
     gl_new_pred_class = np.argmax(gl_new_prediction, axis=1)
     gl_new_pred_label = label_encoder_gl.inverse_transform(gl_new_pred_class)
-    return gl_new_pred_label[0]
+    return gi_new_pred_label[0], gl_new_pred_label
+

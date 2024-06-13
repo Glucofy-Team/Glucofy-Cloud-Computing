@@ -14,7 +14,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import tensorflow as tf
-
+from tensorflow.keras.models import load_model #Check if it is correct
 from sklearn import metrics
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
@@ -184,3 +184,59 @@ elif best_model == 'Neural Network':
     best_model = nn_model_gi
 
 best_model.save('Glycemic Index Model.h5')
+
+###Check if it is correct
+model_gi = load_model('Glycemic Index Model.h5')
+
+def predict_glycemic_index(calories, proteins, carbs, fats):
+    """
+    Predicts the Glycemic Index given the input features.
+
+    Parameters:
+    - calories: float
+    - proteins: float
+    - carbs: float
+    - fats: float
+
+    Returns:
+    - Predicted glycemic index as float
+    """
+    input_features = np.array([[calories, proteins, carbs, fats]])
+    input_scaled = scaler.transform(input_features)
+    prediction = model_gi.predict(input_scaled)
+    gi_value = float(prediction[0][0])
+    return gi_value
+
+# Placeholder for GL prediction
+def predict_glycemic_load(calories, proteins, carbs, fats):
+    """
+    Predicts the Glycemic Load given the input features.
+
+    Parameters:
+    - calories: float
+    - proteins: float
+    - carbs: float
+    - fats: float
+
+    Returns:
+    - Predicted glycemic load as float (placeholder implementation)
+    """
+    # Placeholder logic
+    return 0.0  # Replace with actual prediction logic
+
+# Placeholder for classification
+def classify_food(calories, proteins, carbs, fats):
+    """
+    Classifies the food given the input features.
+
+    Parameters:
+    - calories: float
+    - proteins: float
+    - carbs: float
+    - fats: float
+
+    Returns:
+    - Food classification as a string (placeholder implementation)
+    """
+    # Placeholder logic
+    return "Unknown"  # Replace with actual classification logic
