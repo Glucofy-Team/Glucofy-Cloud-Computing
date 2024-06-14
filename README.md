@@ -23,6 +23,10 @@ Our application's database utilizes Firestore, which contains a primary user col
 |   /tracker                  |   GET  |                                   -                                                                           |Show all glucose trackers from user| 
 |   /tracker/add              |  POST  |             glucose, condition, notes, datetime                                                               | Create new glucose tracker      | 
 |/tracker/delete/{{trackerId}}| DELETE |                                   -                                                                           | Delete glucose tracker from user| 
+|   /food                     |   GET  |            name -> `Query for search food by name`                                                            |Show all food from user or Search food| 
+|/food/detail/{{foodId}}      |   GET  |                                   -                                                                           |   Show the detail food data     | 
+|   /food/add                 |  POST  |        foodName, gIndex, gLoad, giCategory, glCategory, carbs, calories, fats, proteins, category             |   Save food to firestore DB     | 
+|/food/delete/{{foodId}}      | DELETE |                                   -                                                                           |      Delete food from user      | 
 
 ## Deploy API to Cloud Run
 - First, make sure the Artifact Registry, Cloud Run, and Cloud Build APIs are active by running the following command (click Authorize if the popup appears):
