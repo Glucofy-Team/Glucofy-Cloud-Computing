@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 # URL dataset
-csv_url = 'https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/(modified)%20nutrition%20food%20dataset.csv'
+csv_url = 'https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/nutrition%20food%20dataset%20-%20modified.csv'
 
 # Load and preprocess the dataset (this part is usually done offline)
 df = pd.read_csv(csv_url)

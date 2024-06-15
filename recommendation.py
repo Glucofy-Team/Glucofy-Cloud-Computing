@@ -14,7 +14,7 @@ import numpy as np
 
 """### **Load Data**"""
 
-df = pd.read_csv("https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/(modified)%20nutrition%20food%20dataset.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/nutrition%20food%20dataset%20-%20modified.csv")
 
 df.head()
 

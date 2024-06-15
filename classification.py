@@ -13,21 +13,21 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-data = pd.read_csv('https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/(modified)%20nutrition%20food%20dataset.csv')
+data = pd.read_csv('https://raw.githubusercontent.com/Glucofy-Team/Glucofy-Machine-Learning/main/data/nutrition%20food%20dataset%20-%20modified.csv')
 
 print(data.head())
 
 def categorize_gi_new(gi):
-    if gi <= 50:
+    if gi <= 55:
         return 'Low'
-    elif gi <= 70:
+    elif gi <= 69:
         return 'Medium'
     else:
         return 'High'
 
 # Fungsi untuk mengkategorikan glycemic load dengan threshold baru
 def categorize_gl_new(gl):
-    if gl <= 9:
+    if gl <= 10:
         return 'Low'
     elif gl <= 19:
         return 'Medium'

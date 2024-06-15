@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
 from classification import generate_gi_gl_classification_report
 from recommendation import df, desired_categories, generate_meal_plan
-from flask import Flask, request, jsonify
 from food_data import food_data
-from gi_prediction import predict_gi, predict_gl, classify_food
+from gi_model import predict_gi
+from gl_model import predict_gl
+import numpy as np  
 
 app = Flask(__name__)
 
@@ -14,46 +15,68 @@ def recommend():
 
 #classification
 @app.route('/classify', methods=['GET'])
-def gi_classification_report():
-    report = generate_gi_gl_classification_report()
-    return jsonify(report)
+def classification_report():
+    try:
+        gi_pred_label, gl_pred_label = generate_gi_gl_classification_report()
+
+        # Convert any NumPy arrays to lists
+        gi_pred_label = gi_pred_label.tolist() if isinstance(gi_pred_label, np.ndarray) else gi_pred_label
+        gl_pred_label = gl_pred_label.tolist() if isinstance(gl_pred_label, np.ndarray) else gl_pred_label
+
+        report = {
+            "gi_pred_label": gi_pred_label,
+            "gl_pred_label": gl_pred_label
+        }
+
+        return jsonify(report)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 #prediction -> 3 functions (gi pred, gl pred, classify)
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict_new_data', methods=['POST'])
+def predict_new_data():
     try:
         # Get JSON data from the request
-        input_data = request.json
+        data = request.json
 
         # Extract input features
-        calories = input_data.get('calories')
-        proteins = input_data.get('proteins')
-        carbs = input_data.get('carbs')
-        fats = input_data.get('fats')
+        food_name = data['foodName']
+        category = data['category']
+        calories = data['calories']
+        proteins = data['proteins']
+        carbs = data['carbs']
+        fats = data['fats']
 
         if calories is None or proteins is None or carbs is None or fats is None:
             return jsonify({"error": "Missing one or more input features"}), 400
 
         # Predict Glycemic Index
-        gi_value = predict_gi(calories, proteins, carbs, fats)
+        gi_value, gi_category = predict_gi(calories, proteins, carbs, fats)
 
         # Predict Glycemic Load (Placeholder)
-        gl_value = predict_gl(calories, proteins, carbs, fats)
-
-        # Classify Food (Placeholder)
-        classification = classify_food(calories, proteins, carbs, fats)
+        gl_value, gl_category = predict_gl(calories, proteins, carbs, fats, gi_value)
 
         # Return the results
-        return jsonify({
-            "glycemic_index": gi_value,
-            "glycemic_load": gl_value,
-            "classification": classification
-        })
+        response_data = {
+            "food_name": food_name,
+            "gi_value": gi_value,
+            "gl_value": gl_value,
+            "gi_category": gi_category,
+            "gl_category": gl_category,
+            "calories": calories,
+            "carbs": carbs,
+            "fats": fats,
+            "proteins": proteins,
+            "category": category
+        }
+
+        return jsonify(response_data)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/predict_backup', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     data = request.json  
     food_name = data['foodName']
