@@ -160,7 +160,7 @@ print('Glycemic Index Category:', category_label[0])
 
 """### Save Model"""
 
-model.save('Glycemic Index Model.h5')
+#model.save('Glycemic Index Model.h5')
 
 def predict_gi(calories, proteins, carbohydrates, fats):
     new_data = np.array([[calories, proteins, carbohydrates, fats]])

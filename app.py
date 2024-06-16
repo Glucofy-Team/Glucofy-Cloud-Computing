@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-from classification import generate_gi_gl_classification_report
 from recommendation import df, desired_categories, generate_meal_plan
 from food_data import food_data
 from gi_model import predict_gi
@@ -12,26 +11,6 @@ app = Flask(__name__)
 def recommend():
     meal_plans = generate_meal_plan(df, desired_categories, num_meals=3)
     return jsonify(meal_plans)
-
-#classification
-@app.route('/classify', methods=['GET'])
-def classification_report():
-    try:
-        gi_pred_label, gl_pred_label = generate_gi_gl_classification_report()
-
-        # Convert any NumPy arrays to lists
-        gi_pred_label = gi_pred_label.tolist() if isinstance(gi_pred_label, np.ndarray) else gi_pred_label
-        gl_pred_label = gl_pred_label.tolist() if isinstance(gl_pred_label, np.ndarray) else gl_pred_label
-
-        report = {
-            "gi_pred_label": gi_pred_label,
-            "gl_pred_label": gl_pred_label
-        }
-
-        return jsonify(report)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 #prediction -> 3 functions (gi pred, gl pred, classify)
 @app.route('/predict_new_data', methods=['POST'])

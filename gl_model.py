@@ -150,7 +150,7 @@ print('Glycemic Load Category:', category_label[0])
 
 """### Save Model"""
 
-model.save('Glycemic Load Model.h5')
+#model.save('Glycemic Load Model.h5')
 
 def predict_gl(calories, proteins, carbohydrates, fats, gi):
     new_data = np.array([[calories, proteins, carbohydrates, fats, gi]])
