@@ -47,9 +47,7 @@ docker run -p 8080:8080 glucofy-app
 
 ## Endpoints
 
-| Endpoint             | Method | Description                       |
-| -------------------- | ------ | --------------------------------- |
-| `/recommend`         | GET    | Gives meal recommendation         |
-| `/classify`          | GET    | Gives meal GI & GL classification |
-| `/predict`           | POST   | Returns meal data                 |
-| `/predict_new_input` | POST   | Returns new meal's GI & GL        |
+| Endpoint             | Method | Description                |
+| -------------------- | ------ | -------------------------- |
+| `/recommend`         | GET    | Gives meal recommendation  |
+| `/predict_new_input` | POST   | Returns new meal's GI & GL |

@@ -1,11 +1,15 @@
 from flask import Flask, jsonify, request
 from recommendation import df, desired_categories, generate_meal_plan
-from food_data import food_data
 from gi_model import predict_gi
 from gl_model import predict_gl
 import numpy as np  
 
 app = Flask(__name__)
+
+@app.route('/', methods=['GET'])
+def main():
+    return jsonify({"message": "Welcome to Glucofy Machine Learning API! We apologize for it is not publicly accessible.",
+})
 
 @app.route('/recommend', methods=['GET'])
 def recommend():
@@ -54,18 +58,6 @@ def predict_new_data():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.json  
-    food_name = data['foodName']
-
-    # Use the external function to get prediction
-    response_data = food_data(food_name)
-
-    # Send response in JSON format
-    return jsonify(response_data)
    
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
