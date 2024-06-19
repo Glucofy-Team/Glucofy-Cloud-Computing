@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
-from recommendation import df, desired_categories, generate_meal_plan
 from gi_model import predict_gi
 from gl_model import predict_gl
 import numpy as np  
+from diabetes_gpt2 import hitGenAI
 
 app = Flask(__name__)
 
@@ -11,11 +11,23 @@ def main():
     return jsonify({"message": "Welcome to Glucofy Machine Learning API! We apologize for it is not publicly accessible.",
 })
 
-@app.route('/recommend', methods=['GET'])
+@app.route('/recommend', methods=['POST'])
 def recommend():
-    meal_plans = generate_meal_plan(df, desired_categories, num_meals=3)
-    return jsonify(meal_plans)
+    try:
+        data = request.json
+        if 'message' not in data:
+            return jsonify({"error": "Missing 'message' in request data"}), 400
+        
+        message = data['message']
 
+        replyAI = hitGenAI(message)
+
+        # Return the AI reply in JSON format
+        return jsonify({"reply": replyAI})
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 #prediction -> 3 functions (gi pred, gl pred, classify)
 @app.route('/predict_new_data', methods=['POST'])
 def predict_new_data():
