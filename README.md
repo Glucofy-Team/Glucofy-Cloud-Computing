@@ -4,7 +4,7 @@
 
 The app architecture in the cloud will be like this :
 
-<img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_Cloud.drawio.png">
+<img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_Architecture.drawio.png">
 
 We use Cloud Run, Cloud Storage, and Cloud Firestore services to support our applications. The frontend uses APIs from two servers: Backend and Machine Learning models. The backend is directly connected to Cloud Firestore as its database. The Machine Learning model connects directly to Cloud Storage to load the datasets stored there. We deploy these services in the Asia-Southeast2 region and the Asia-Southeast2-B zone.
 
