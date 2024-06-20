@@ -1,0 +1,533 @@
+{
+	"info": {
+		"_postman_id": "38793914-e4dd-4de0-b2e7-99189376eccb",
+		"name": "Glucofy API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28769920",
+		"_collection_link": "https://glucofy.postman.co/workspace/Glucofy-Workspace~7c28fe63-1cc3-4011-8436-35f2ef8f0fef/collection/28769920-38793914-e4dd-4de0-b2e7-99189376eccb?action=share&source=collection_link&creator=28769920"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('jwt', pm.response.json().token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Komeng\",\r\n    \"lastName\": \"Uhuy\",\r\n    \"phoneNumber\": \"08123456789\",\r\n    \"email\": \"h3h3h3@gmail.com\",\r\n    \"password\": \"test12345\",\r\n    \"gender\": \"L\",\r\n    \"weight\": 75,\r\n    \"height\": 170,\r\n    \"age\": 53\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('jwt', pm.response.json().token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"uhuy123@gmail.com\",\r\n    \"password\": \"uhuyyy123\"\r\n}\r\n// {\r\n//     \"email\": \"h3h3h3@gmail.com\",\r\n//     \"password\": \"test12345\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Alfiansyah\",\r\n    \"lastName\": \"Komeng\",\r\n    \"phoneNumber\": \"08123456789\",\r\n    \"email\": \"uhuy123@gmail.com\",\r\n    \"password\": \"uhuyyy123\",\r\n    \"gender\": \"L\",\r\n    \"weight\": 75,\r\n    \"height\": 172,\r\n    \"age\": 53\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/user/update"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/user/delete"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tracker",
+			"item": [
+				{
+					"name": "Add Tracker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('trackerId', pm.response.json().trackerId)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"glucose\": 85,\r\n    \"condition\": \"puasa\",\r\n    \"notes\": \"aman aja\",\r\n    \"datetime\": \"2024-06-20T12:34\"\r\n}\r\n\r\n// Notes : \r\n// value for condition = (Sesudah Makan/Sebelum Makan/Puasa/Sebelum Tidur/Lainnya)\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/tracker/add"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tracker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.to.have.status(200));",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Averages object has the correct structure\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.averages).to.exist.and.to.be.an('object');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Today and data arrays are present with expected fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.today).to.be.an('array').and.to.not.be.empty;",
+									"    pm.expect(responseData.data).to.be.an('array').and.to.not.be.empty;",
+									"",
+									"    responseData.today.forEach(function(item) {",
+									"        pm.expect(item).to.have.property('id').that.is.a('string');",
+									"        pm.expect(item).to.have.property('glucose').that.is.a('number');",
+									"        pm.expect(item).to.have.property('condition').that.is.a('string');",
+									"        pm.expect(item).to.have.property('notes').that.is.a('string');",
+									"        pm.expect(item).to.have.property('datetime').that.is.a('string');",
+									"    });",
+									"",
+									"    responseData.data.forEach(function(item) {",
+									"        pm.expect(item).to.have.property('id').that.is.a('string');",
+									"        pm.expect(item).to.have.property('glucose').that.is.a('number');",
+									"        pm.expect(item).to.have.property('condition').that.is.a('string');",
+									"        pm.expect(item).to.have.property('notes').that.is.a('string');",
+									"        pm.expect(item).to.have.property('datetime').that.is.a('string');",
+									"    });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/tracker"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tracker",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/tracker/delete/{{trackerId}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Food",
+			"item": [
+				{
+					"name": "ML",
+					"item": [
+						{
+							"name": "Food Recommendation by AI",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"foodName\": \"ayam bakar\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/ai/recommend"
+							},
+							"response": []
+						},
+						{
+							"name": "Predict New Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"foodName\": \"Sirup Jagung\",\r\n    \"category\": \"Lainnya\",\r\n    \"calories\": 286.2,\r\n    \"proteins\": 1,\r\n    \"carbs\": 77.6,\r\n    \"fats\": 10\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{urlML}}/predict_new_data"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dataset",
+					"item": [
+						{
+							"name": "Load Dataset",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/dataset",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dataset"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "nasi",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "15",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "58",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Detail Dataset",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/dataset/detail/{{dataId}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dataset",
+										"detail",
+										"{{dataId}}"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "nasi",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "15",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Database",
+					"item": [
+						{
+							"name": "Save Food to DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set('foodId', pm.response.json().foodId)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"foodName\": \"Lele Goreng\",\r\n    \"gIndex\": 20,\r\n    \"gLoad\": 20,\r\n    \"giCategory\": \"Low\",\r\n    \"glCategory\": \"Low\",\r\n    \"carbs\": 10,\r\n    \"calories\": 100,\r\n    \"fats\": 2.85,\r\n    \"proteins\": 18.47,\r\n    \"category\": \"Daging\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/food/add"
+							},
+							"response": []
+						},
+						{
+							"name": "Get All & Search Food from DB",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/food",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"food"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "sushi",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Foods Today",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/food/today"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Detail Food",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/food/detail/{{foodId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Food",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{jwt}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/food/delete/{{foodId}}"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}"
+			},
+			"response": []
+		}
+	]
+}
