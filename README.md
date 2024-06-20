@@ -6,12 +6,12 @@ The app architecture in the cloud will be like this :
 
 <img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_Architecture.drawio.png">
 
-We use Cloud Run, Cloud Storage, and Cloud Firestore services to support our applications. The frontend uses APIs from two servers: Backend and Machine Learning models. The backend is directly connected to Cloud Firestore as its database. The Machine Learning model connects directly to Cloud Storage to load the datasets stored there. We deploy these services in the Asia-Southeast2 region and the Asia-Southeast2-B zone.
+We use Cloud Run, Cloud Firestore, and Vertex AI services to support our applications. The frontend utilizes APIs from two servers: the backend and machine learning models. The backend is directly connected to Cloud Firestore as its database and to Vertex AI for the food recommendation feature. We deploy these services in the Asia-Southeast2 region and the Asia-Southeast2-B zone.
 
 ## 2. Database
 
 <img src="https://github.com/Glucofy-Team/Glucofy-Cloud-Computing/blob/main/img/Glucofy_NoSQL.drawio.png">
-Our application's database utilizes Firestore, which contains a primary user collection. Each document within this user collection represents an individual user and includes a tracker subcollection that stores related tracking information specific to that user.
+Our application's database utilizes Firestore, which contains a primary `User` collection. Each document within this *User* collection represents an individual user and includes a tracker subcollection that stores related tracking information specific to that user. Additionally, there is a `Food` subcollection related to the user's tracking data. This subcollection stores details about various foods
 
 ## 3. API Endpoints
 ### - Express-API Endpoints :
