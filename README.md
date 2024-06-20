@@ -39,7 +39,7 @@ Our application's database utilizes Firestore, which contains a primary user col
 | :-------------------------: | :----: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------: |
 | `/predict_new_data`         | POST   | foodName, category, calories, proteins, carbs, fats                                                           |  Returns new meal's GI & GL     |
 
-## Deploy API to Cloud Run
+## 4. Deploy API to Cloud Run
 - First, make sure the Artifact Registry, Cloud Run, and Cloud Build APIs are active by running the following command (click Authorize if the popup appears):
 ```console
 gcloud services enable artifactregistry.googleapis.com cloudbuild.googleapis.com run.googleapis.com
