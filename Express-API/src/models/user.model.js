@@ -3,6 +3,7 @@ const { db } = require('../config/firestore');
 const readSingleData = async (collectionName, docId) => {
   const docRef = db.collection(collectionName).doc(docId);
   const doc = await docRef.get();
+
   if (!doc.exists) {
     throw new Error(`${collectionName} not found`);
   }

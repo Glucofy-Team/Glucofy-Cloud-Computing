@@ -34,12 +34,18 @@ const readDataTrackerToday = async (collectionName, docId, subCollectionName) =>
 
   const data = [];
   const todayDate = new Date().toISOString().split('T')[0];
+  let totalGlucose = 0;
+  let count = 0;
 
   snapshot.forEach((doc) => {
     const docData = doc.data();
     const entryDate = docData.datetime.toDate().toISOString().split('T')[0];
 
     if (entryDate === todayDate) {
+      const glucose = docData.glucose;
+      totalGlucose += glucose;
+      count += 1;
+
       data.push({
         id: doc.id,
         glucose: docData.glucose,
@@ -50,7 +56,12 @@ const readDataTrackerToday = async (collectionName, docId, subCollectionName) =>
     }
   });
 
-  return data;
+  const averageGlucose = count > 0 ? Math.round(totalGlucose / count) : 0;
+
+  return {
+    average: averageGlucose,
+    data,
+  };
 };
 
 const createDataTracker = async (collectionName, docId, subCollectionName, data) => {
@@ -112,6 +123,27 @@ const calculateAverages = (data) => {
     return `${year}-${month}`;
   };
 
+  const formatWeeklyKey = (start, end) => {
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+    const startMonth = start.getMonth();
+    const endMonth = end.getMonth();
+    const year = start.getFullYear();
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
+    ];
+
+    if (startMonth === endMonth) {
+      const monthName = monthNames[startMonth];
+      return `${startDay} ${monthName} ${year} - ${endDay} ${monthName} ${year}`;
+    }
+
+    const startMonthName = monthNames[startMonth];
+    const endMonthName = monthNames[endMonth];
+    return `${startDay} ${startMonthName} ${year} - ${endDay} ${endMonthName} ${year}`;
+  };
+
   const currentMonth = getCurrentMonth();
 
   data.forEach((entry) => {
@@ -154,11 +186,68 @@ const calculateAverages = (data) => {
     return result;
   };
 
+  /* eslint-disable arrow-body-style */
+  const sortObjectByDate = (obj, parseFn) => {
+    return Object.fromEntries(
+      Object.entries(obj).sort(([a], [b]) => {
+        const aDate = parseFn(a);
+        const bDate = parseFn(b);
+        return aDate - bDate;
+      }),
+    );
+  };
+
+  const parseWeeklyKey = (key) => {
+    /* eslint-disable no-unused-vars */
+    const [startStr, endStr] = key.split(' - ');
+    const startDate = new Date(startStr.split('-').reverse().join('-'));
+    return startDate;
+  };
+
+  const formatWeeklyThisMonth = (weeklyObj) => {
+    const formatted = {};
+    Object.keys(weeklyObj).forEach((key) => {
+      const [startStr, endStr] = key.split(' - ');
+      const start = new Date(startStr.split('-').reverse().join('-'));
+      const end = new Date(endStr.split('-').reverse().join('-'));
+      const formattedKey = formatWeeklyKey(start, end);
+      formatted[formattedKey] = weeklyObj[key];
+    });
+    return formatted;
+  };
+
+  const parseDate = (key) => {
+    const [start, end] = key.split(' - ');
+    const [startDay, startMonth, startYear] = start.split(' ');
+    const [endDay, endMonth, endYear] = end.split(' ');
+
+    /* eslint-disable object-property-newline */
+    const monthNames = {
+      Januari: 0, Februari: 1, Maret: 2, April: 3, Mei: 4, Juni: 5,
+      Juli: 6, Agustus: 7, September: 8, Oktober: 9, November: 10, Desember: 11,
+    };
+
+    const startDate = new Date(startYear, monthNames[startMonth], startDay);
+    return startDate;
+  };
+
+  const convertToArray = (obj) => {
+    return Object.entries(obj).map(([key, value]) => ({ date: key, glucose: value }));
+  };
+
   return {
-    daily: calculateAverageForPeriods(dailyAverages),
-    weekly: calculateAverageForPeriods(weeklyAverages),
-    monthly: calculateAverageForPeriods(monthlyAverages),
-    weeklyThisMonth: calculateAverageForPeriods(weeklyThisMonth),
+    daily: convertToArray(
+      sortObjectByDate(calculateAverageForPeriods(dailyAverages), (key) => new Date(key)),
+    ),
+    weekly: convertToArray(
+      sortObjectByDate(calculateAverageForPeriods(weeklyAverages), parseWeeklyKey),
+    ),
+    monthly: convertToArray(
+      sortObjectByDate(calculateAverageForPeriods(monthlyAverages), (key) => new Date(`${key}-01`)),
+    ),
+    weeklyThisMonth: convertToArray(sortObjectByDate(calculateAverageForPeriods(
+      formatWeeklyThisMonth(weeklyThisMonth),
+    ), parseDate)),
   };
 };
 
