@@ -33,15 +33,28 @@ const readDataTrackerToday = async (collectionName, docId, subCollectionName) =>
   }
 
   const data = [];
-  const todayDate = new Date().toISOString().split('T')[0];
+  const now = new Date();
+
+  // Define the offset for UTC+8
+  const offset = 8 * 60 * 60 * 1000;
+
+  // Get current date in UTC
+  const utcYear = now.getUTCFullYear();
+  const utcMonth = now.getUTCMonth();
+  const utcDate = now.getUTCDate();
+
+  // Define the start and end of today in UTC+8
+  const todayStart = new Date(Date.UTC(utcYear, utcMonth, utcDate) + offset);
+  const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
+
   let totalGlucose = 0;
   let count = 0;
 
   snapshot.forEach((doc) => {
     const docData = doc.data();
-    const entryDate = docData.datetime.toDate().toISOString().split('T')[0];
+    const entryDate = docData.datetime.toDate();
 
-    if (entryDate === todayDate) {
+    if (entryDate >= todayStart && entryDate < todayEnd) {
       const glucose = docData.glucose;
       totalGlucose += glucose;
       count += 1;
@@ -51,7 +64,7 @@ const readDataTrackerToday = async (collectionName, docId, subCollectionName) =>
         glucose: docData.glucose,
         condition: docData.condition,
         notes: docData.notes,
-        datetime: docData.datetime.toDate(),
+        datetime: entryDate,
       });
     }
   });
